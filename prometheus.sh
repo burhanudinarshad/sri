@@ -34,7 +34,7 @@ cp -r consoles/ console_libraries/ /etc/prometheus/
 cd /etc/systemd/system/
 wget "https://raw.githubusercontent.com/burhanudinarshad/sri/master/prometheus.service"
 
-cd etc/prometheus/ directory
+cd etc/prometheus/
 wget "https://raw.githubusercontent.com/burhanudinarshad/sri/master/prometheus.yml"
 
 # Change directory permissions to Prometheus user and group
