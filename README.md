@@ -1,4 +1,4 @@
-# Tools instalation Steps
+# Instalation Steps
 
 
 # Pre-Req: 
@@ -14,5 +14,5 @@ OS Firewall: Remove all Ubuntu firewall rules.
 
 # Steps to run the scripts 
 
-| wget "<URL of script >" 
-  ./<script name.sh> 
+`wget "<URL of script >" `
+`./<script name.sh>` 
