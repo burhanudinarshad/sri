@@ -3,7 +3,9 @@
 
 # Pre-Req: 
 OS: Ubuntu 18.04 
+-
 OS Firewall: Remove all Ubuntu firewall rules. 
+-
 
 # Allow following ports in NSG:
         Service - Port
