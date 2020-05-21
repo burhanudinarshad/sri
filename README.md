@@ -6,6 +6,8 @@ OS: Ubuntu 18.04
 -
 OS Firewall: Remove all Ubuntu firewall rules. 
 -
+User: Root User should run the scripts
+-
 
 # Allow following ports in NSG:
         Service - Port
