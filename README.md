@@ -14,5 +14,13 @@ OS Firewall: Remove all Ubuntu firewall rules.
 
 # Steps to run the scripts 
 
+## For Nagios: https://raw.githubusercontent.com/burhanudinarshad/sri/master/nagios.sh
+## For Prometheu: https://raw.githubusercontent.com/burhanudinarshad/sri/master/prometheus.sh
+## For Grafana: https://raw.githubusercontent.com/burhanudinarshad/sri/master/grafana.sh
+## For GrayLog: https://raw.githubusercontent.com/burhanudinarshad/sri/master/graylog.sh
+
+this command will copy script to Ubuntu host
 `wget "<URL of script >" `
+
+Run the script by following command.
 `./<script name.sh>` 
