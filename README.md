@@ -21,10 +21,13 @@ User: Root User should run the scripts
 ## For Nagios: https://raw.githubusercontent.com/burhanudinarshad/sri/master/nagios.sh
 ## For Prometheu: https://raw.githubusercontent.com/burhanudinarshad/sri/master/prometheus.sh
 ## For Grafana: https://raw.githubusercontent.com/burhanudinarshad/sri/master/Grafana.sh
-## For GrayLog: https://raw.githubusercontent.com/burhanudinarshad/sri/master/graylog.sh
 
 this command will copy script to Ubuntu host
 `wget "<URL of script >" `
 
 Run the script by following command.
 `./<script name.sh>` 
+
+
+
+## For GrayLog Please reffer to readme in graylog folder
