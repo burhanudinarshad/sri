@@ -19,8 +19,9 @@ It should output similar line as below:
 5. Open graylog.sh 
 6. Replace URL of server.conf file at line 48 with URL of your repo. 
     If server.conf of this Repo is used, following will be the values
-      admin username: admin
-      admin password: abcd@1234
+      username: admin
+      
+      password: abcd@1234
 7. Run graylog.sh file in Ubuntu. 
 
 
