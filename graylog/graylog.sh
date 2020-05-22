@@ -30,8 +30,9 @@ sudo apt install mongodb-org
 
 
 sudo systemctl stop mongod.service
-sudo systemctl start mongod.service
 sudo systemctl enable mongod.service
+sudo systemctl start mongod.service
+
 
 #Install GrayLog
 
@@ -40,4 +41,14 @@ wget https://packages.graylog2.org/repo/packages/graylog-3.0-repository_latest.d
 sudo dpkg -i graylog-3.0-repository_latest.deb
 sudo apt update
 sudo apt install graylog-server
+
+#replace config file with our own config file
+cd /etc/graylog/server
+sudo rm -f server.conf
+wget "https://raw.githubusercontent.com/burhanudinarshad/sri/master/graylog/server.conf"
+
+systemctl stop graylog-server
+systemctl daemon-reload
+sudo systemctl enable graylog-server
+sudo systemctl start graylog-server
 
