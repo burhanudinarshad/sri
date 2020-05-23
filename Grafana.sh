@@ -10,5 +10,3 @@ sudo apt-get install grafana-enterprise
 sudo systemctl daemon-reload
 sudo systemctl enable grafana-server.service
 sudo systemctl start grafana-server
-
-./bin/grafana-server web
