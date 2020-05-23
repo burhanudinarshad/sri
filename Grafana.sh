@@ -8,7 +8,7 @@ echo "get-grafana repo"
 sudo add-apt-repository "deb https://packages.grafana.com/enterprise/deb stable main"
 
 sudo apt-get update
-sudo apt-get install grafana-enterprise
+sudo apt-get install -y grafana-enterprise
 
 echo "installed-grafana repo"
 sudo systemctl daemon-reload
