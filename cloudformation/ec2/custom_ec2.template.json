@@ -16,6 +16,7 @@
     "KeyName" : {
       "Description" : "Name of an existing EC2 KeyPair to enable SSH access to the instances",
       "Type" : "AWS::EC2::KeyPair::KeyName",
+	  "Default" : "ec2-keypair",
       "ConstraintDescription" : "must be the name of an existing EC2 KeyPair."
     },
 
@@ -181,7 +182,7 @@
              "wget 'https://raw.githubusercontent.com/burhanudinarshad/sri/master/Grafana.sh'\n",
              "sudo ./Grafana.sh"
         ]]}
-		}				  
+		}		
       }
     },
 
