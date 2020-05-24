@@ -1,7 +1,7 @@
 ########Instal Prometheus 
 
-sudo export RELEASE="2.2.1"
-sudo wget https://github.com/prometheus/prometheus/releases/download/v${RELEASE}/prometheus-${RELEASE}.linux-amd64.tar.gz
+export RELEASE="2.2.1"
+sudo wget https://github.com/prometheus/prometheus/releases/download/v2.2.1/prometheus-2.2.1.linux-amd64.tar.gz
 sudo tar xvf prometheus-${RELEASE}.linux-amd64.tar.gz
 
 # Change to the newly created directory from file extractions.
