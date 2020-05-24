@@ -5,7 +5,7 @@ Following Template will install Nagios, Prometheus, and Grafana
 # Prometheus: 
 http://IP-Address-of-EC2:9090
   
-# Nagios: http:
+# Nagios:
 http://IP-Address-of-EC2/nagios
       For Nagios initial credentials: (you can change after first time login)
         Username: nagiosadmin 
@@ -18,7 +18,8 @@ http://IP-Address-of-EC2:9090
         Username: admin
         Password: admin
   
- # For graylog currently we have to use manual script. I'm working on to automate it as it requires IP of EC2 to be set in it's config file. Will update once graylog is completed. 
+ # GrayLog 
+ Currently we have to use manual script. I'm working on to automate it as it requires IP of EC2 to be set in it's config file. Will update once graylog is completed. 
  
   Command to run this template: 
   AWS CLI should be set at us-east-1 region for this template to work
