@@ -27,7 +27,7 @@ sudo a2enmod cgi
 sudo ufw allow Apache
 sudo ufw reload
 
-sudo htpasswd -c /usr/local/nagios/etc/htpasswd.users nagiosadmin
+sudo htpasswd -c -b /usr/local/nagios/etc/htpasswd.users nagiosadmin abcd@1234
 sudo systemctl restart apache2.service
 sudo systemctl start nagios.service
 
@@ -43,7 +43,6 @@ sudo ./configure
 sudo make
 sudo make install
 
-sudo systemctl start nagios.service
 sudo systemctl stop nagios.service
-sudo systemctl restart nagios.service
-sudo systemctl status nagios.service
+sudo systemctl enable nagios.service
+sudo systemctl start nagios.service
