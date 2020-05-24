@@ -29,10 +29,12 @@ sudo ls /usr/local/bin/
 sudo cp -r consoles/ console_libraries/ /etc/prometheus/
 
 #Create systemd unit file
-sudo cd /etc/systemd/system/
+cd /etc/systemd/system/
+pwd
 sudo wget "https://raw.githubusercontent.com/burhanudinarshad/sri/master/prometheus.service"
 
-sudo cd etc/prometheus/
+cd /etc/prometheus/
+pwd
 sudo wget "https://raw.githubusercontent.com/burhanudinarshad/sri/master/prometheus.yml"
 
 # Change directory permissions to Prometheus user and group
@@ -40,8 +42,8 @@ sudo chown -R prometheus:prometheus /etc/prometheus/  /var/lib/prometheus/
 sudo chmod -R 775 /etc/prometheus/ /var/lib/prometheus/
 
 # Start and enable Prometheus service
-sudo systemctl start prometheus
 sudo systemctl enable prometheus
+sudo systemctl start prometheus
 
-#check Status 
-systemctl status prometheus
+
+
