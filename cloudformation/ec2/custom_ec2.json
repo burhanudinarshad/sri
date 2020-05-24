@@ -94,15 +94,19 @@
 [
              "#!/bin/bash -xe\n",
              "sudo apt-get update\n",
+ "sudo wget 'https://raw.githubusercontent.com/burhanudinarshad/sri/master/prometheus.sh'\n",
+ "sudo sh /prometheus.sh\n",
  "sudo wget 'https://raw.githubusercontent.com/burhanudinarshad/sri/master/Grafana.sh'\n",
- "sudo sh /Grafana.sh",
+ "sudo sh /Grafana.sh\n",
+ "sudo wget 'https://raw.githubusercontent.com/burhanudinarshad/sri/master/nagios.sh'\n",
+ "sudo sh /nagios.sh\n"
         ]]}}
       }
     },
     "WebServerSecurityGroup" : {
       "Type" : "AWS::EC2::SecurityGroup",
       "Properties" : {
-        "GroupDescription" : "Enable HTTP access via port 80",
+        "GroupDescription" : "Enable port 80 for nagios, 3000 for grafana, 9090 for prometheus, 9000 for graylog",
         "SecurityGroupIngress" : [
           {"IpProtocol" : "tcp", "FromPort" : "80", "ToPort" : "80", "CidrIp" : "0.0.0.0/0"},
   {"IpProtocol" : "tcp", "FromPort" : "3000", "ToPort" : "3000", "CidrIp" : "0.0.0.0/0"},
