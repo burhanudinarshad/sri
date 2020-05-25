@@ -1,7 +1,7 @@
 {
   "AWSTemplateFormatVersion" : "2010-09-09",
 
-  "Description" : "AWS CloudFormation sample template LAMP_Single_Instance: Create a LAMP stack using a single EC2",
+  "Description" : "AWS CloudFormation sample template. Installs Grafana, Prometheus, Nagios and Graylog-server",
 
   "Parameters" : {
     "KeyName": {
@@ -12,7 +12,7 @@
     "InstanceType" : {
       "Description" : "WebServer EC2 instance type",
       "Type" : "String",
-      "Default" : "t2.small",
+      "Default" : "t2.large",
       "AllowedValues" : [ 
         "t1.micro", 
         "t2.nano", 
@@ -94,10 +94,12 @@
 [
              "#!/bin/bash -xe\n",
              "sudo apt-get update\n",
- "sudo wget 'https://raw.githubusercontent.com/burhanudinarshad/sri/master/prometheus.sh'\n",
- "sudo sh /prometheus.sh\n",
+ "sudo wget 'https://raw.githubusercontent.com/burhanudinarshad/sri/master/graylog/graylog.sh'\n",
+ "sudo sh /graylog.sh\n",
  "sudo wget 'https://raw.githubusercontent.com/burhanudinarshad/sri/master/Grafana.sh'\n",
  "sudo sh /Grafana.sh\n",
+ "sudo wget 'https://raw.githubusercontent.com/burhanudinarshad/sri/master/prometheus.sh'\n",
+ "sudo sh /prometheus.sh\n",
  "sudo wget 'https://raw.githubusercontent.com/burhanudinarshad/sri/master/nagios.sh'\n",
  "sudo sh /nagios.sh\n"
         ]]}}
@@ -118,5 +120,10 @@
     }
   },
 
-  "Outputs" : {}
+  "Outputs" : {
+    "WebsiteURL" : {
+      "Description" : "URL for newly created LAMP stack",
+      "Value" : { "Fn::Join" : ["", ["http://", { "Fn::GetAtt" : [ "WebServerInstance", "PublicDnsName" ]}]] }
+    }
+  }
 }
