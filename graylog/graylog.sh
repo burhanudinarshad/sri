@@ -1,7 +1,7 @@
 #install the open source version of Java
 
 sudo apt update
-sudo apt-get install openjdk-8-jre-headless apt-transport-https uuid-runtime dirmngr
+sudo apt-get install -y openjdk-8-jre-headless apt-transport-https uuid-runtime dirmngr
 
 #install Elastic Search
 wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
@@ -14,7 +14,7 @@ sudo sh -c 'echo "deb https://artifacts.elastic.co/packages/6.x/apt stable main"
 
 #install Elastic Search
 sudo apt update
-sudo apt install elasticsearch
+sudo apt install -y elasticsearch
 
 # commands below to make sure it automatically starts up when the server boots up and start it immediately
 sudo systemctl start elasticsearch.service
@@ -26,7 +26,7 @@ echo "deb [ arch=amd64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/
 
 #Install Mongo DB
 sudo apt update
-sudo apt install mongodb-org
+sudo apt install -y mongodb-org
 
 
 sudo systemctl stop mongod.service
@@ -40,10 +40,11 @@ cd /tmp
 wget https://packages.graylog2.org/repo/packages/graylog-3.0-repository_latest.deb
 sudo dpkg -i graylog-3.0-repository_latest.deb
 sudo apt update
-sudo apt install graylog-server
+sudo apt install -y graylog-server
 
 #replace config file with our own config file
 cd /etc/graylog/server
+pwd
 sudo rm -f server.conf
 wget "https://raw.githubusercontent.com/burhanudinarshad/sri/master/graylog/server.conf"
 
