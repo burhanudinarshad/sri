@@ -3,9 +3,6 @@
 sudo apt update
 sudo apt-get install -y openjdk-8-jre-headless apt-transport-https uuid-runtime dirmngr
 
-#install Elastic Search
-wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
-
 # run the commands below to add Elasticsearch GPG key by importing it…
 wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
 
