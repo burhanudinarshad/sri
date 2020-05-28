@@ -43,6 +43,8 @@ sudo ./configure
 sudo make
 sudo make install
 
+sudo chmod -R 777 /usr/local/nagios/libexec
+
 sudo systemctl stop nagios.service
 sudo systemctl enable nagios.service
 sudo systemctl start nagios.service
