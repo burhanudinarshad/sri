@@ -1,0 +1,142 @@
+{
+   "AWSTemplateFormatVersion":"2010-09-09",
+   "Description":"AWS CloudFormation Sample Template VPC_EC2_Instance_with_EIP_and_Security_Group: Sample template showing how to create an instance with an Elastic IP address and a security group in an existing VPC. It assumes you have already created a VPC. **WARNING** This template creates an Amazon EC2 instance. You will be billed for the AWS resources used if you create a stack from this template.",
+   "Parameters":{
+      "email":{
+         "Description":"Email ID for SNS topic",
+         "Type":"String",
+         "Default":"burhanudinarshad@gmail.com"
+      },
+      "DBInstanceIdentifier":{
+        "Description":"RDS instance identifier",
+        "Type":"String",
+        "Default":"database-1"
+     },
+     "ec2ID":{
+        "Description":"RDS instance identifier",
+        "Type":"String",
+        "Default":"i-06c8b6db9991915be"
+     }
+   },
+   "Resources":{      
+      "SNSEMAIL" : {
+         "Type" : "AWS::SNS::Topic",
+         "Properties" : {
+             "Subscription" : [ {
+                 "Endpoint" : { "Ref":"email"},
+                 "Protocol" : "email"
+             } ]
+         }
+     },
+      "ec2CPUAlarm" : {
+         "Type" : "AWS::CloudWatch::Alarm",
+         "Properties" : {
+           "AlarmDescription" : "CPU alarm for my instance",
+           "AlarmActions" : [ { "Ref" : "SNSEMAIL" } ],
+           "MetricName" : "CPUUtilization",
+           "Namespace" : "AWS/EC2",
+           "Statistic" : "Average",
+           "Period" : "60",
+           "EvaluationPeriods" : "3",
+           "Threshold" : "90",
+           "ComparisonOperator" : "GreaterThanThreshold",
+           "Dimensions" : [ {
+             "Name" : "InstanceId",
+             "Value" : { "Ref" : "ec2ID" }
+           } ]
+         }
+       },
+       "ec2StatusCheck" : {
+        "Type" : "AWS::CloudWatch::Alarm",
+        "Properties" : {
+          "AlarmDescription" : "Status Check failed alarm",
+          "AlarmActions" : [ { "Ref" : "SNSEMAIL" } ],
+          "MetricName" : "StatusCheckFailed_System",
+          "Namespace" : "AWS/EC2",
+          "Statistic" : "Average",
+          "Period" : "60",
+          "EvaluationPeriods" : "2",
+          "Threshold" : "0",
+          "ComparisonOperator" : "GreaterThanThreshold",
+          "Dimensions" : [ {
+            "Name" : "InstanceId",
+            "Value" : { "Ref" : "ec2ID" }
+          } ]
+        }
+      },
+       "rdsCPUAlarm" : {
+        "Type" : "AWS::CloudWatch::Alarm",
+        "Properties" : {
+          "AlarmDescription" : "Primary database CPU utilization is over 80%.",
+          "AlarmActions" : [ { "Ref" : "SNSEMAIL" } ],
+          "MetricName" : "CPUUtilization",
+          "Namespace" : "AWS/RDS",
+          "Statistic" : "Average",
+          "Period" : "60",
+          "EvaluationPeriods" : "3",
+          "Threshold" : "80",
+          "ComparisonOperator" : "GreaterThanThreshold",
+          "Dimensions" : [ {
+            "Name" : "DBInstanceIdentifier",
+            "Value" : { "Ref" : "DBInstanceIdentifier" }
+          } ]
+        }
+      },
+      "rdsFreeStorageTooLow" : {
+        "Type" : "AWS::CloudWatch::Alarm",
+        "Properties" : {
+          "AlarmDescription" : "Database free storage space over last 10 minutes too low.",
+          "AlarmActions" : [ { "Ref" : "SNSEMAIL" } ],
+          "MetricName" : "FreeStorageSpace",
+          "Namespace" : "AWS/RDS",
+          "Statistic" : "Average",
+          "Period" : "600",
+          "EvaluationPeriods" : "1",
+          "Threshold" : "2000000000",
+          "ComparisonOperator" : "LessThanOrEqualToThreshold",
+          "Dimensions" : [ {
+            "Name" : "DBInstanceIdentifier",
+            "Value" : { "Ref" : "DBInstanceIdentifier" }
+          } ]
+        }
+      },
+      "rdsFreeableMemoryTooLow" : {
+        "Type" : "AWS::CloudWatch::Alarm",
+        "Properties" : {
+          "AlarmDescription" : "Database freeable memory over last 10 minutes too low, performance may suffer.",
+          "AlarmActions" : [ { "Ref" : "SNSEMAIL" } ],
+          "MetricName" : "FreeableMemory",
+          "Namespace" : "AWS/RDS",
+          "Statistic" : "Average",
+          "Period" : "600",
+          "EvaluationPeriods" : "1",
+          "Threshold" : "1024000000",
+          "ComparisonOperator" : "LessThanOrEqualToThreshold",
+          "Dimensions" : [ {
+            "Name" : "DBInstanceIdentifier",
+            "Value" : { "Ref" : "DBInstanceIdentifier" }
+          } ]
+        }
+      },
+      "rdsDiskQueueDepthTooHigh" : {
+        "Type" : "AWS::CloudWatch::Alarm",
+        "Properties" : {
+          "AlarmDescription" : "Average database disk queue depth over last 10 minutes too high",
+          "AlarmActions" : [ { "Ref" : "SNSEMAIL" } ],
+          "MetricName" : "DiskQueueDepth",
+          "Namespace" : "AWS/RDS",
+          "Statistic" : "Average",
+          "Period" : "600",
+          "EvaluationPeriods" : "1",
+          "Threshold" : "64",
+          "ComparisonOperator" : "GreaterThanThreshold",
+          "Dimensions" : [ {
+            "Name" : "DBInstanceIdentifier",
+            "Value" : { "Ref" : "DBInstanceIdentifier" }
+          } ]
+        }
+      }
+
+   },
+   "Outputs": {}
+}
