@@ -10,6 +10,6 @@
  4. DiskQueueDepthTooHigh
  
  
- Please use following command:
+ Please use following command(please also remove qoutes while executing the command):
  
- aws cloudformation deploy --template-file .\alarms.json --stack-name <Name of stack> --parameter-overrides email=<Email ID on which Notifications will be sent> DBInstanceIdentifier=<DB Instance identifier on which RDS alerts will be applied> ec2ID=<Instance ID of EC2 on which alerts are to be applied>
+ aws cloudformation deploy --template-file .\alarms.json --stack-name <Name of stack> --parameter-overrides email="Email ID on which Notifications will be sent" DBInstanceIdentifier="DB Instance identifier on which RDS alerts will be applied" ec2ID="Instance ID of EC2 on which alerts are to be applied"
