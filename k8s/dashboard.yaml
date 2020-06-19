@@ -27,21 +27,6 @@ metadata:
   name: kubernetes-dashboard
   namespace: kubernetes-dashboard
 
----
-
-kind: Service
-apiVersion: v1
-metadata:
-  labels:
-    k8s-app: kubernetes-dashboard
-  name: kubernetes-dashboard
-  namespace: kubernetes-dashboard
-spec:
-  ports:
-    - port: 443
-      targetPort: 8443
-  selector:
-    k8s-app: kubernetes-dashboard
 
 ---
 
@@ -98,25 +83,47 @@ metadata:
   name: kubernetes-dashboard
   namespace: kubernetes-dashboard
 rules:
-  # Allow Dashboard to get, update and delete Dashboard exclusive secrets.
+  # Allow Metrics Scraper to get metrics from the Metrics server
+  - apiGroups: ["metrics.k8s.io"]
+    resources: ["pods", "nodes"]
+    verbs: ["get", "list", "watch"]
+
+  # Other resources
   - apiGroups: [""]
-    resources: ["secrets"]
-    resourceNames: ["kubernetes-dashboard-key-holder", "kubernetes-dashboard-certs", "kubernetes-dashboard-csrf"]
-    verbs: ["get", "update", "delete"]
-    # Allow Dashboard to get and update 'kubernetes-dashboard-settings' config map.
-  - apiGroups: [""]
-    resources: ["configmaps"]
-    resourceNames: ["kubernetes-dashboard-settings"]
-    verbs: ["get", "update"]
-    # Allow Dashboard to get metrics.
-  - apiGroups: [""]
-    resources: ["services"]
-    resourceNames: ["heapster", "dashboard-metrics-scraper"]
-    verbs: ["proxy"]
-  - apiGroups: [""]
-    resources: ["services/proxy"]
-    resourceNames: ["heapster", "http:heapster:", "https:heapster:", "dashboard-metrics-scraper", "http:dashboard-metrics-scraper"]
-    verbs: ["get"]
+    resources: ["nodes", "namespaces", "pods", "serviceaccounts", "services", "configmaps", "endpoints", "persistentvolumeclaims", "replicationcontrollers", "replicationcontrollers/scale", "persistentvolumeclaims", "persistentvolumes", "bindings", "events", "limitranges", "namespaces/status", "pods/log", "pods/status", "replicationcontrollers/status", "resourcequotas", "resourcequotas/status"]
+    verbs: ["get", "list", "watch"]
+  
+  - apiGroups: ["apps"]
+    resources: ["daemonsets", "deployments", "deployments/scale", "replicasets", "replicasets/scale", "statefulsets"]
+    verbs: ["get", "list", "watch"]
+
+  - apiGroups: ["autoscaling"]
+    resources: ["horizontalpodautoscalers"]
+    verbs: ["get", "list", "watch"]
+
+  - apiGroups: ["batch"]
+    resources: ["cronjobs", "jobs"]
+    verbs: ["get", "list", "watch"]
+
+  - apiGroups: ["extensions"]
+    resources: ["daemonsets", "deployments", "deployments/scale", "networkpolicies", "replicasets", "replicasets/scale", "replicationcontrollers/scale"]
+    verbs: ["get", "list", "watch"]
+
+  - apiGroups: ["networking.k8s.io"]
+    resources: ["ingresses", "networkpolicies"]
+    verbs: ["get", "list", "watch"]
+
+  - apiGroups: ["policy"]
+    resources: ["poddisruptionbudgets"]
+    verbs: ["get", "list", "watch"]
+
+  - apiGroups: ["storage.k8s.io"]
+    resources: ["storageclasses", "volumeattachments"]
+    verbs: ["get", "list", "watch"]
+
+  - apiGroups: ["rbac.authorization.k8s.io"]
+    resources: ["clusterrolebindings", "clusterroles", "roles", "rolebindings", ]
+    verbs: ["get", "list", "watch"]
 
 ---
 
@@ -165,6 +172,21 @@ subjects:
     name: kubernetes-dashboard
     namespace: kubernetes-dashboard
 
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: kubernetes-dashboard
+  labels:
+    k8s-app: kubernetes-dashboard
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: kubernetes-dashboard
+  namespace: kubernetes-dashboard
+
 ---
 
 kind: Deployment
@@ -190,13 +212,14 @@ spec:
           image: kubernetesui/dashboard:v2.0.0
           imagePullPolicy: Always
           ports:
-            - containerPort: 9090
+            - containerPort: 9999
               protocol: TCP
           args:
             - --insecure-bind-address=0.0.0.0
-            - --insecure-port=9090
+            - --insecure-port=9999
             - --enable-insecure-login
             - --namespace=kubernetes-dashboard
+            - --enable-skip-login 
             # Uncomment the following line to manually specify Kubernetes API server Host
             # If not specified, Dashboard will attempt to auto discover the API server and connect
             # to it. Uncomment only if the default does not work.
@@ -211,7 +234,7 @@ spec:
             httpGet:
               scheme: HTTP
               path: /
-              port: 9090
+              port: 9999
             initialDelaySeconds: 30
             timeoutSeconds: 30
           securityContext:
@@ -238,18 +261,18 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  annotations:
-    alb.ingress.kubernetes.io/target-type: ip
-  name: "kubernetes-dashboard-service"
-  namespace: "kubernetes-dashboard"
+  name: kubernetes-dashboard-service
+  namespace: kubernetes-dashboard
 spec:
-  ports:
-  - port: 9090
-    targetPort: 9090
-    protocol: TCP
-  type: NodePort
   selector:
     k8s-app: "kubernetes-dashboard"
+  ports:
+  - name: proxy
+    port: 9999
+    targetPort: 9999
+    protocol: TCP
+  type: LoadBalancer 
+  
 ---
 
 kind: Service
